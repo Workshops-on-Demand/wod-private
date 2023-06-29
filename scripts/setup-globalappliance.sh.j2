@@ -13,12 +13,15 @@ else
 	LDAPSETUP=0
 fi
 
-echo "Use private ansible to setup generic remote appliance at $RTARGET"
-ansible-playbook {{ ANSIBLEPRIVDIR }}/setup_appliance.yml -i $RTARGET, -e "RTARGET=$RTARGET WORKSHOP=$w APPMIN=$APPMIN APPMAX=$APPMAX LDAPSETUP=$LDAPSETUP LDAPDMN={{ LDAPDMN }} LDAPSRVNAME={{ LDAPSRVNAME }}" $ANSPLAYOPT $ANSPRIVOPT
+if [ -f "{{ ANSIBLEPRIVDIR }}/setup_appliance.yml" ]; then
+	echo "Use private ansible to setup generic remote appliance at $RTARGET"
+	ansible-playbook {{ ANSIBLEPRIVDIR }}/setup_appliance.yml -i $RTARGET, -e "RTARGET=$RTARGET WORKSHOP=$w APPMIN=$APPMIN APPMAX=$APPMAX LDAPSETUP=$LDAPSETUP LDAPDMN={{ LDAPDMN }} LDAPSRVNAME={{ LDAPSRVNAME }}" $ANSPLAYOPT $ANSPRIVOPT
+	echo "Final private generic script setup phase for $w on remote appliance $RTARGET"
+fi
 if [ -f "{{ ANSIBLEPRIVDIR }}/setup_${w}_appliance.yml" ]; then
 	echo "Use private ansible to setup specificities for $w on remote appliance $RTARGET"
 	ansible-playbook {{ ANSIBLEPRIVDIR }}/setup_${w}_appliance.yml -i $RTARGET, -e "RTARGET=$RTARGET WORKSHOP=$w APPMIN=$APPMIN APPMAX=$APPMAX LDAPSETUP=$LDAPSETUP LDAPDMN={{ LDAPDMN }} LDAPSRVNAME={{ LDAPSRVNAME }}" $ANSPLAYOPT $ANSPRIVOPT
+	echo "Final private specific script setup phase for $w on remote appliance $RTARGET"
 fi
 
-echo "Final script setup phase for $w on remote appliance $RTARGET"
 exit 0
