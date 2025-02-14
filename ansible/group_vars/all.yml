@@ -3,7 +3,7 @@ VAULTPWD: ceciestunmotdepassetrèscomplique!!!##123
 # E-mail address receiving error reports
 WODMONITOR: nobody@nowhere.com
 # Painful Brranding !!
-BRANDING: "WoD Private"
-BRANDINGWOD: "Private WoD"
-BRANDINGLOGO: "![Logo](Pictures/my-logo.png)"
-BRANDINGURL: "https://example.com"
+BRANDING: "WoD"
+BRANDINGWOD: "WoD"
+BRANDINGLOGO: "![Logo](Pictures/wod-logo.png)"
+BRANDINGURL: "https://github.com/Workshops-on-Demand/wod-notebooks"
