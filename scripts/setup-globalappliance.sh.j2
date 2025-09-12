@@ -2,26 +2,26 @@
 
 #set -x
 
-source {{ SCRIPTDIR }}/wod.sh
-source {{ SCRIPTDIR }}/functions.sh
+source /etc/wod.sh
+source {{ WODSCRIPTDIR }}/functions.sh
 
 # Do we need LDAP setup or not
-if [ _"`get_ldap_status $wid`" != _"false" ]; then
+if [ _"`wod_get_ldap_status $wid`" != _"false" ]; then
 	echo "This is a setup with LDAP"
-	LDAPSETUP=1
+	WODLDAPSETUP=1
 else
-	LDAPSETUP=0
+	WODLDAPSETUP=0
 fi
 
-if [ -f "{{ ANSIBLEPRIVDIR }}/setup_appliance.yml" ]; then
-	echo "Use private ansible to setup generic remote appliance at $RTARGET"
-	ansible-playbook {{ ANSIBLEPRIVDIR }}/setup_appliance.yml -i $RTARGET, -e "RTARGET=$RTARGET WORKSHOP=$w APPMIN=$APPMIN APPMAX=$APPMAX LDAPSETUP=$LDAPSETUP LDAPDMN={{ LDAPDMN }} LDAPSRVNAME={{ LDAPSRVNAME }}" $ANSPLAYOPT $ANSPRIVOPT
-	echo "Final private generic script setup phase for $w on remote appliance $RTARGET"
+if [ -f "{{ WODANSIBLEPRIVDIR }}/setup_appliance.yml" ]; then
+	echo "Use private ansible to setup generic remote appliance at $WODRTARGET"
+	ansible-playbook {{ WODANSIBLEPRIVDIR }}/setup_appliance.yml -i $WODRTARGET, -e "WODRTARGET=$WODRTARGET WORKSHOP=$w WODAPPMIN=$WODAPPMIN WODAPPMAX=$WODAPPMAX WODLDAPSETUP=$WODLDAPSETUP WODLDAPDMN={{ WODLDAPDMN }} WODLDAPSRVNAME={{ WODLDAPSRVNAME }}" $WODANSPLAYOPT $WODANSPRIVOPT
+	echo "Final private generic script setup phase for $w on remote appliance $WODRTARGET"
 fi
-if [ -f "{{ ANSIBLEPRIVDIR }}/setup_${w}_appliance.yml" ]; then
-	echo "Use private ansible to setup specificities for $w on remote appliance $RTARGET"
-	ansible-playbook {{ ANSIBLEPRIVDIR }}/setup_${w}_appliance.yml -i $RTARGET, -e "RTARGET=$RTARGET WORKSHOP=$w APPMIN=$APPMIN APPMAX=$APPMAX LDAPSETUP=$LDAPSETUP LDAPDMN={{ LDAPDMN }} LDAPSRVNAME={{ LDAPSRVNAME }}" $ANSPLAYOPT $ANSPRIVOPT
-	echo "Final private specific script setup phase for $w on remote appliance $RTARGET"
+if [ -f "{{ WODANSIBLEPRIVDIR }}/setup_${w}_appliance.yml" ]; then
+	echo "Use private ansible to setup specificities for $w on remote appliance $WODRTARGET"
+	ansible-playbook {{ WODANSIBLEPRIVDIR }}/setup_${w}_appliance.yml -i $WODRTARGET, -e "WODRTARGET=$WODRTARGET WORKSHOP=$w WODAPPMIN=$WODAPPMIN WODAPPMAX=$WODAPPMAX WODLDAPSETUP=$WODLDAPSETUP WODLDAPDMN={{ WODLDAPDMN }} WODLDAPSRVNAME={{ WODLDAPSRVNAME }}" $WODANSPLAYOPT $WODANSPRIVOPT
+	echo "Final private specific script setup phase for $w on remote appliance $WODRTARGET"
 fi
 
 exit 0
